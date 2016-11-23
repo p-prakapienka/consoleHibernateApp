@@ -22,11 +22,13 @@ public class UserDaoTest extends AbstractDaoTest {
     }
 
     @Test
-    public void testInsert() {
+    public void testInsertAndDelete() {
         User user = userDao.save(new User("Test user3"));
         User persisted = userDao.get(user.getId());
         Assert.assertEquals(user, persisted);
         Assert.assertTrue(userDao.getAll().size() == 3);
+        userDao.delete(user.getId());
+        Assert.assertTrue(userDao.getAll().size() == 2);
     }
 
     @Test
@@ -34,6 +36,9 @@ public class UserDaoTest extends AbstractDaoTest {
         User user = new User(USER1_ID, "New name");
         User updated = userDao.save(user);
         Assert.assertEquals(updated, user);
+        user.setName(USER1.getName());
+        user = userDao.save(user);
+        Assert.assertEquals(USER1, user);
     }
 
     @Test
@@ -46,18 +51,6 @@ public class UserDaoTest extends AbstractDaoTest {
     public void testGet() {
         User user = userDao.get(100);
         Assert.assertEquals(user, USER1);
-    }
-
-    @Test
-    public void testDelete() {
-        userDao.delete(101);
-        Assert.assertTrue(userDao.getAll().size() == 1);
-    }
-
-    @Test
-    public void testDeleteAll() {
-        userDao.deleteAll();
-        Assert.assertTrue(userDao.getAll().isEmpty());
     }
 
 }
