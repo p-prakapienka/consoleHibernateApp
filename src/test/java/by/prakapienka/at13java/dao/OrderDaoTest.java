@@ -19,17 +19,23 @@ public class OrderDaoTest extends AbstractDaoTest {
     }
 
     @Test
-    public void testSave() {
+    public void testInsertAndDelete() {
         Order order = new Order("New order", USER2);
         Order persisted = orderDao.save(order, USER2_ID);
         Assert.assertEquals(order, persisted);
         Assert.assertTrue(orderDao.getAll(USER2_ID).size() == 3);
+        orderDao.delete(persisted.getId(), USER2_ID);
+        Assert.assertTrue(orderDao.getAll(USER2_ID).size() == 2);
     }
 
     @Test
-    public void testDelete() {
-        orderDao.delete(ORDER4_ID, USER2_ID);
-        Assert.assertTrue(orderDao.getAll(USER2_ID).size() == 1);
+    public void update() {
+        Order order = new Order(ORDER3_ID, "New name", USER2);
+        Order updated = orderDao.save(order, USER2_ID);
+        Assert.assertEquals(updated, order);
+        order.setName(ORDER3.getName());
+        order = orderDao.save(order, USER2_ID);
+        Assert.assertEquals(ORDER3, order);
     }
 
     @Test
