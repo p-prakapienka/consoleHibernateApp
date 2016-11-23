@@ -7,9 +7,6 @@ import by.prakapienka.at13java.view.ViewResolver;
 
 import static by.prakapienka.at13java.util.ConsoleHelper.*;
 
-/**
- * Created by Restrictor on 22.11.2016.
- */
 public class DBManager {
 
     public static void main(String[] args) {

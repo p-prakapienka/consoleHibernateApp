@@ -3,9 +3,6 @@ package by.prakapienka.at13java.view;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Restrictor on 22.11.2016.
- */
 public class ViewResolver {
 
     private static Map<ViewName, View> viewMap;

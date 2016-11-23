@@ -11,9 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-/**
- * Created by Restrictor on 22.11.2016.
- */
 public class JpaHibernateDaoFactory {
 
     private static final EntityManagerFactory emf = Persistence

@@ -8,12 +8,9 @@ import org.junit.Test;
 
 import static by.prakapienka.at13java.TestData.*;
 
-/**
- * Created by Restrictor on 21.11.2016.
- */
 public class OrderDaoTest extends AbstractDaoTest {
 
-    OrderDao orderDao;
+    private OrderDao orderDao;
 
     @Before
     public void setUp() {

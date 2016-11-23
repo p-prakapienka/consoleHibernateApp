@@ -4,9 +4,6 @@ import by.prakapienka.at13java.model.Order;
 import by.prakapienka.at13java.model.OrderItem;
 import by.prakapienka.at13java.model.User;
 
-/**
- * Created by Restrictor on 22.11.2016.
- */
 public class AppContext {
 
     private static User activeUser;

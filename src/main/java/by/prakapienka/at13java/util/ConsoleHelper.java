@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.EnumSet;
 
-/**
- * Created by Restrictor on 22.11.2016.
- */
 public class ConsoleHelper {
 
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -29,7 +26,9 @@ public class ConsoleHelper {
         int result = -1;
         try {
             result = Integer.parseInt(readString());
-        } catch (Exception e) {}
+        } catch (Exception e) {
+
+        }
         return result;
     }
 }

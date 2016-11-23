@@ -8,7 +8,7 @@ import java.util.List;
 
 public class JpaUserDao implements UserDao {
 
-    EntityManager em;
+    private EntityManager em;
 
     public JpaUserDao(EntityManager em) {
         this.em = em;

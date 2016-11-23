@@ -6,10 +6,7 @@ import by.prakapienka.at13java.model.OrderItem;
 import by.prakapienka.at13java.util.ConsoleHelper;
 import by.prakapienka.at13java.util.JpaHibernateDaoFactory;
 
-/**
- * Created by Restrictor on 22.11.2016.
- */
-public class ItemView implements View {
+class ItemView implements View {
 
     private OrderItemDao itemDao = JpaHibernateDaoFactory.getOrderItemDao();
 

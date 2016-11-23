@@ -4,9 +4,6 @@ import by.prakapienka.at13java.model.User;
 
 import java.util.List;
 
-/**
- * Created by Restrictor on 21.11.2016.
- */
 public interface UserDao {
 
     User save(User user);

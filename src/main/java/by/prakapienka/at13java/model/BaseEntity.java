@@ -4,9 +4,6 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 
-/**
- * Created by Restrictor on 21.11.2016.
- */
 @MappedSuperclass
 @Access(AccessType.FIELD)
 public class BaseEntity {

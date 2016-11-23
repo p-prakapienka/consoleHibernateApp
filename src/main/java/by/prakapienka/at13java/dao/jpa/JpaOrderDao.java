@@ -7,12 +7,9 @@ import by.prakapienka.at13java.model.User;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-/**
- * Created by Restrictor on 21.11.2016.
- */
 public class JpaOrderDao implements OrderDao {
 
-    EntityManager em;
+    private EntityManager em;
 
     public JpaOrderDao(EntityManager em) {
         this.em = em;

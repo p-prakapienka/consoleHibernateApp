@@ -7,12 +7,9 @@ import by.prakapienka.at13java.model.OrderItem;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-/**
- * Created by Restrictor on 21.11.2016.
- */
 public class JpaOrderItemDao implements OrderItemDao {
 
-    EntityManager em;
+    private EntityManager em;
 
     public JpaOrderItemDao(EntityManager em) {
         this.em = em;

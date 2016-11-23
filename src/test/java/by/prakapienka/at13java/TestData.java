@@ -4,9 +4,6 @@ import by.prakapienka.at13java.model.Order;
 import by.prakapienka.at13java.model.OrderItem;
 import by.prakapienka.at13java.model.User;
 
-/**
- * Created by Restrictor on 21.11.2016.
- */
 public class TestData {
 
     public final static Integer USER1_ID = 100;

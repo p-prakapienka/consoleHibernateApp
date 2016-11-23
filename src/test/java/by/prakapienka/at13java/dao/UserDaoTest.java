@@ -13,7 +13,7 @@ import static by.prakapienka.at13java.TestData.USER1_ID;
 
 public class UserDaoTest extends AbstractDaoTest {
 
-    UserDao userDao;
+    private UserDao userDao;
 
     @Before
     public void setUp() {

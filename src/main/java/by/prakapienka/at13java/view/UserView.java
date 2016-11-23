@@ -10,10 +10,7 @@ import by.prakapienka.at13java.util.JpaHibernateDaoFactory;
 
 import java.util.List;
 
-/**
- * Created by Restrictor on 22.11.2016.
- */
-public class UserView implements View {
+class UserView implements View {
 
     private UserDao userDao = JpaHibernateDaoFactory.getUserDao();
     private OrderDao orderDao = JpaHibernateDaoFactory.getOrderDao();
