@@ -58,9 +58,15 @@ public class User extends BaseEntity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        return super.equals(o) && this.getName().equals(((User)o).getName());
+    }
+
+    @Override
     public String toString() {
         return "User{" +
                 "name='" + name + '\'' +
                 '}';
     }
+
 }

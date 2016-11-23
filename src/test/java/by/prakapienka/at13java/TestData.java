@@ -38,6 +38,6 @@ public class TestData {
     public final static OrderItem ORDER_ITEM_5 = new OrderItem(ORDER_ITEM_5_ID, "Item5 - Order3 - User2", ORDER3);
     public final static OrderItem ORDER_ITEM_6 = new OrderItem(ORDER_ITEM_6_ID, "Item6 - Order3 - User2", ORDER3);
     public final static OrderItem ORDER_ITEM_7 = new OrderItem(ORDER_ITEM_7_ID, "Item7 - Order4 - User2", ORDER4);
-    public final static OrderItem ORDER_ITEM_8 = new OrderItem(ORDER_ITEM_8_ID, "Item8 - Order5 - User2", ORDER4);
+    public final static OrderItem ORDER_ITEM_8 = new OrderItem(ORDER_ITEM_8_ID, "Item8 - Order4 - User2", ORDER4);
 
 }

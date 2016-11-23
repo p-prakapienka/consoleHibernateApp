@@ -73,6 +73,11 @@ public class Order extends BaseEntity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        return super.equals(o) && this.getName().equals(((Order)o).getName());
+    }
+
+    @Override
     public String toString() {
         return "Order{" +
                 "name='" + name + '\'' +
