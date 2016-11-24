@@ -62,11 +62,11 @@ public class OrderDaoTest extends AbstractDaoTest {
 
     @Test
     public void testInsertAndDeleteItem() {
-        OrderItem item = orderItemDao.save(new OrderItem("New Item"), ORDER4_ID);
+        OrderItem item = orderItemDao.save(new OrderItem("New Item"));
         Order order = orderDao.insertItem(ORDER4_ID, item.getId(), USER2_ID);
         Assert.assertTrue(order.getOrderItems().size() == 3);
         order = orderDao.deleteItem(ORDER4_ID, item.getId(), USER2_ID);
         Assert.assertTrue(order.getOrderItems().size() == 2);
-        orderItemDao.delete(item.getId(), ORDER4_ID);
+        orderItemDao.delete(item.getId());
     }
 }

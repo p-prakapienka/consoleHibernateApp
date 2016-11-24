@@ -61,7 +61,7 @@ class OrderView implements View {
     }
 
     private ViewName showAllOrderItems() {
-        List<OrderItem> items = orderItemDao.getAll(AppContext.getActiveOrderId());
+        List<OrderItem> items = orderItemDao.getAll();
         ConsoleHelper.writeMessage("\nOrder " + AppContext.getActiveOrder() + ":");
 
         if (items.isEmpty()) {
@@ -78,7 +78,7 @@ class OrderView implements View {
             ConsoleHelper.writeMessage("Unknown command.");
             return ViewName.ORDER;
         } else {
-            OrderItem item = orderItemDao.get(result, AppContext.getActiveOrderId());
+            OrderItem item = orderItemDao.get(result);
             if (item != null) {
                 AppContext.setItem(item);
                 return ViewName.ITEM;
@@ -100,9 +100,7 @@ class OrderView implements View {
                 ConsoleHelper.writeMessage("Name is too short.");
                 continue;
             }
-            OrderItem item = orderItemDao.save(
-                    new OrderItem(itemName),
-                    AppContext.getActiveOrderId());
+            OrderItem item = orderItemDao.save(new OrderItem(itemName));
             if (item != null) {
                 ConsoleHelper.writeMessage("Item successfully created.");
             }

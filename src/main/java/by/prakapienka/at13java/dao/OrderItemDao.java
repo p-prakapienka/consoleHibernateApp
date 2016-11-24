@@ -6,12 +6,12 @@ import java.util.List;
 
 public interface OrderItemDao {
 
-    OrderItem save(OrderItem item, int orderId);
+    OrderItem save(OrderItem item);
 
-    boolean delete(int id, int orderId);
+    boolean delete(int id);
 
-    OrderItem get(int id, int orderId);
+    OrderItem get(int id);
 
-    List<OrderItem> getAll(int orderId);
+    List<OrderItem> getAll();
 
 }

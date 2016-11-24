@@ -1,7 +1,6 @@
 package by.prakapienka.at13java.dao.jpa;
 
 import by.prakapienka.at13java.dao.OrderItemDao;
-import by.prakapienka.at13java.model.Order;
 import by.prakapienka.at13java.model.OrderItem;
 
 import javax.persistence.EntityManager;
@@ -16,7 +15,7 @@ public class JpaOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public OrderItem save(OrderItem item, int orderId) {
+    public OrderItem save(OrderItem item) {
         em.getTransaction().begin();
         if (item.isNew()) {
             try {
@@ -42,7 +41,7 @@ public class JpaOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public boolean delete(int id, int orderId) {
+    public boolean delete(int id) {
         em.getTransaction().begin();
         int result = 0;
 
@@ -59,12 +58,12 @@ public class JpaOrderItemDao implements OrderItemDao {
     }
 
     @Override
-    public OrderItem get(int id, int orderId) {
+    public OrderItem get(int id) {
         return em.find(OrderItem.class, id);
     }
 
     @Override
-    public List<OrderItem> getAll(int orderId) {
+    public List<OrderItem> getAll() {
         return em.createNamedQuery(OrderItem.ALL, OrderItem.class)
                 .getResultList();
     }

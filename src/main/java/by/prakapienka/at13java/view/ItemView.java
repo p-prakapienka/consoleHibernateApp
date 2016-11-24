@@ -58,9 +58,7 @@ class ItemView implements View {
                 continue;
             }
             AppContext.getItem().setName(newName);
-            OrderItem updated = itemDao.save(
-                    AppContext.getItem(),
-                    AppContext.getActiveOrderId());
+            OrderItem updated = itemDao.save(AppContext.getItem());
             if (updated != null) {
                 ConsoleHelper.writeMessage("OrderItem successfully updated.");
             }
@@ -70,7 +68,7 @@ class ItemView implements View {
     }
 
     private ViewName deleteOrderItem() {
-        itemDao.delete(AppContext.getItem().getId(), AppContext.getActiveOrderId());
+        itemDao.delete(AppContext.getItem().getId());
         return ViewName.ORDER;
     }
 }
