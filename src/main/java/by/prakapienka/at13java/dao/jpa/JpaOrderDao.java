@@ -23,12 +23,24 @@ public class JpaOrderDao implements OrderDao {
         em.getTransaction().begin();
         order.setUser(em.getReference(User.class, userId));
         if (order.isNew()) {
-            em.persist(order);
-            em.getTransaction().commit();
+            try {
+                em.persist(order);
+                em.getTransaction().commit();
+            } catch (Exception e) {
+                em.getTransaction().rollback();
+                //TODO log exception
+                return null;
+            }
             return order;
         } else {
-            Order updated = em.merge(order);
-            em.getTransaction().commit();
+            Order updated = null;
+            try {
+                updated = em.merge(order);
+                em.getTransaction().commit();
+            } catch (Exception e) {
+                em.getTransaction().rollback();
+                //TODO log exception
+            }
             return updated;
         }
     }
@@ -36,11 +48,18 @@ public class JpaOrderDao implements OrderDao {
     @Override
     public boolean delete(int id, int userId) {
         em.getTransaction().begin();
-        int result = em.createNamedQuery(Order.DELETE)
-                .setParameter("id", id)
-                .setParameter("userId", userId)
-                .executeUpdate();
-        em.getTransaction().commit();
+        int result = 0;
+
+        try {
+            result = em.createNamedQuery(Order.DELETE)
+                    .setParameter("id", id)
+                    .setParameter("userId", userId)
+                    .executeUpdate();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            //TODO log exception
+        }
         return result != 0;
     }
 

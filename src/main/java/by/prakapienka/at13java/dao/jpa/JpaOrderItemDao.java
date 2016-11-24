@@ -23,12 +23,24 @@ public class JpaOrderItemDao implements OrderItemDao {
         em.getTransaction().begin();
         item.setOrder(em.getReference(Order.class, orderId));
         if (item.isNew()) {
-            em.persist(item);
-            em.getTransaction().commit();
+            try {
+                em.persist(item);
+                em.getTransaction().commit();
+            } catch (Exception e) {
+                em.getTransaction().rollback();
+                //TODO log exception
+                return null;
+            }
             return item;
         } else {
-            OrderItem updated = em.merge(item);
-            em.getTransaction().commit();
+            OrderItem updated = null;
+            try {
+                updated = em.merge(item);
+                em.getTransaction().commit();
+            } catch (Exception e) {
+                em.getTransaction().rollback();
+                //TODO log exception
+            }
             return updated;
         }
     }
@@ -36,11 +48,18 @@ public class JpaOrderItemDao implements OrderItemDao {
     @Override
     public boolean delete(int id, int orderId) {
         em.getTransaction().begin();
-        int result = em.createNamedQuery(OrderItem.DELETE)
-                .setParameter("id", id)
-                .setParameter("orderId", orderId)
-                .executeUpdate();
-        em.getTransaction().commit();
+        int result = 0;
+
+        try {
+            result = em.createNamedQuery(OrderItem.DELETE)
+                    .setParameter("id", id)
+                    .setParameter("orderId", orderId)
+                    .executeUpdate();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            //TODO log exception
+        }
         return result != 0;
     }
 

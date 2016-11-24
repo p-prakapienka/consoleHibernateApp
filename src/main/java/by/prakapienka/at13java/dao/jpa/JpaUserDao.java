@@ -18,12 +18,24 @@ public class JpaUserDao implements UserDao {
     public User save(User user) {
         em.getTransaction().begin();
         if (user.isNew()) {
-            em.persist(user);
-            em.getTransaction().commit();
+            try {
+                em.persist(user);
+                em.getTransaction().commit();
+            } catch (Exception e) {
+                em.getTransaction().rollback();
+                //TODO log exception
+                return null;
+            }
             return user;
         } else {
-            User updated = em.merge(user);
-            em.getTransaction().commit();
+            User updated = null;
+            try {
+                updated = em.merge(user);
+                em.getTransaction().commit();
+            } catch (Exception e) {
+                em.getTransaction().rollback();
+                //TODO log exception
+            }
             return updated;
         }
     }
@@ -31,10 +43,17 @@ public class JpaUserDao implements UserDao {
     @Override
     public boolean delete(int id) {
         em.getTransaction().begin();
-        int result = em.createNamedQuery(User.DELETE)
-                .setParameter("id", id)
-                .executeUpdate();
-        em.getTransaction().commit();
+        int result = 0;
+
+        try {
+            result = em.createNamedQuery(User.DELETE)
+                    .setParameter("id", id)
+                    .executeUpdate();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            //TODO log exception
+        }
         return result != 0;
     }
 
