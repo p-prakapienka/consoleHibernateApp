@@ -20,17 +20,17 @@ public class OrderItemDaoTest extends AbstractDaoTest {
 
     @Test
     public void testInsertAndDelete() {
-        OrderItem item = new OrderItem("New item", ORDER1);
+        OrderItem item = new OrderItem("New item");
         OrderItem persisted = orderItemDao.save(item, ORDER1_ID);
         Assert.assertEquals(item, persisted);
-        Assert.assertTrue(orderItemDao.getAll(ORDER1_ID).size() == 3);
+        Assert.assertTrue(orderItemDao.getAll(ORDER1_ID).size() == 9);
         orderItemDao.delete(persisted.getId(), ORDER1_ID);
-        Assert.assertTrue(orderItemDao.getAll(ORDER1_ID).size() == 2);
+        Assert.assertTrue(orderItemDao.getAll(ORDER1_ID).size() == 8);
     }
 
     @Test
     public void testUpdate() {
-        OrderItem item = new OrderItem(ORDER_ITEM_7_ID, "New name", ORDER4);
+        OrderItem item = new OrderItem(ORDER_ITEM_7_ID, "New name");
         OrderItem updated = orderItemDao.save(item, ORDER4_ID);
         Assert.assertEquals(updated, item);
         item.setName(ORDER_ITEM_7.getName());
@@ -47,6 +47,6 @@ public class OrderItemDaoTest extends AbstractDaoTest {
     @Test
     public void testGetAll() {
         orderItemDao.getAll(ORDER2_ID);
-        Assert.assertTrue(orderItemDao.getAll(ORDER1_ID).size() == 2);
+        Assert.assertTrue(orderItemDao.getAll(ORDER1_ID).size() == 8);
     }
 }

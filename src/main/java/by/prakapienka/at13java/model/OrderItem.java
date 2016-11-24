@@ -5,11 +5,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 
 @NamedQueries({
-        @NamedQuery(name = OrderItem.ALL, query = "SELECT i FROM OrderItem i WHERE i.order.id=:orderId ORDER BY i.name"),
-        @NamedQuery(name = OrderItem.DELETE, query = "DELETE FROM OrderItem i WHERE i.id=:id AND i.order.id=:orderId")
+        @NamedQuery(name = OrderItem.ALL, query = "SELECT i FROM OrderItem i ORDER BY i.name"),
+        @NamedQuery(name = OrderItem.DELETE, query = "DELETE FROM OrderItem i WHERE i.id=:id")
 })
 @Entity
-@Table(name = "order_items")
+@Table(name = "products")
 public class OrderItem extends BaseEntity {
 
     public static final String DELETE = "OrderItem.delete";
@@ -19,25 +19,15 @@ public class OrderItem extends BaseEntity {
     @NotEmpty
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id")
-    private Order order;
-
     public OrderItem() {}
 
     public OrderItem(String name) {
         this.name = name;
     }
 
-    public OrderItem(String name, Order order) {
-        this.name = name;
-        this.order = order;
-    }
-
-    public OrderItem(Integer id, String name, Order order) {
+    public OrderItem(Integer id, String name) {
         super(id);
         this.name = name;
-        this.order = order;
     }
 
     public String getName() {
@@ -48,14 +38,6 @@ public class OrderItem extends BaseEntity {
         this.name = name;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
     @Override
     public boolean equals(Object o) {
         return super.equals(o) && this.getName().equals(((OrderItem)o).getName());
@@ -63,9 +45,8 @@ public class OrderItem extends BaseEntity {
 
     @Override
     public String toString() {
-        return "OrderItem{" +
-                "name='" + name + '\'' +
-                '}';
+        return "Product " + getId() +
+                ": name='" + getName() + '.';
     }
 
 }

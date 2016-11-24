@@ -31,13 +31,13 @@ public class TestData {
     public final static Integer ORDER_ITEM_7_ID = 10006;
     public final static Integer ORDER_ITEM_8_ID = 10007;
 
-    public final static OrderItem ORDER_ITEM_1 = new OrderItem(ORDER_ITEM_1_ID, "Item1 - Order1 - User1", ORDER1);
-    public final static OrderItem ORDER_ITEM_2 = new OrderItem(ORDER_ITEM_2_ID, "Item2 - Order1 - User1", ORDER1);
-    public final static OrderItem ORDER_ITEM_3 = new OrderItem(ORDER_ITEM_3_ID, "Item3 - Order2 - User1", ORDER2);
-    public final static OrderItem ORDER_ITEM_4 = new OrderItem(ORDER_ITEM_4_ID, "Item4 - Order2 - User1", ORDER2);
-    public final static OrderItem ORDER_ITEM_5 = new OrderItem(ORDER_ITEM_5_ID, "Item5 - Order3 - User2", ORDER3);
-    public final static OrderItem ORDER_ITEM_6 = new OrderItem(ORDER_ITEM_6_ID, "Item6 - Order3 - User2", ORDER3);
-    public final static OrderItem ORDER_ITEM_7 = new OrderItem(ORDER_ITEM_7_ID, "Item7 - Order4 - User2", ORDER4);
-    public final static OrderItem ORDER_ITEM_8 = new OrderItem(ORDER_ITEM_8_ID, "Item8 - Order4 - User2", ORDER4);
+    public final static OrderItem ORDER_ITEM_1 = new OrderItem(ORDER_ITEM_1_ID, "Item1 - Order1 - User1");
+    public final static OrderItem ORDER_ITEM_2 = new OrderItem(ORDER_ITEM_2_ID, "Item2 - Order1 - User1");
+    public final static OrderItem ORDER_ITEM_3 = new OrderItem(ORDER_ITEM_3_ID, "Item3 - Order2 - User1");
+    public final static OrderItem ORDER_ITEM_4 = new OrderItem(ORDER_ITEM_4_ID, "Item4 - Order2 - User1");
+    public final static OrderItem ORDER_ITEM_5 = new OrderItem(ORDER_ITEM_5_ID, "Item5 - Order3 - User2");
+    public final static OrderItem ORDER_ITEM_6 = new OrderItem(ORDER_ITEM_6_ID, "Item6 - Order3 - User2");
+    public final static OrderItem ORDER_ITEM_7 = new OrderItem(ORDER_ITEM_7_ID, "Item7 - Order4 - User2");
+    public final static OrderItem ORDER_ITEM_8 = new OrderItem(ORDER_ITEM_8_ID, "Item8 - Order4 - User2");
 
 }

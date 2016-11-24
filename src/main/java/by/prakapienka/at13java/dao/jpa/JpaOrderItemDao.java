@@ -17,11 +17,7 @@ public class JpaOrderItemDao implements OrderItemDao {
 
     @Override
     public OrderItem save(OrderItem item, int orderId) {
-        if (!item.isNew() && get(item.getId(), orderId) == null) {
-            return null;
-        }
         em.getTransaction().begin();
-        item.setOrder(em.getReference(Order.class, orderId));
         if (item.isNew()) {
             try {
                 em.persist(item);
@@ -53,7 +49,6 @@ public class JpaOrderItemDao implements OrderItemDao {
         try {
             result = em.createNamedQuery(OrderItem.DELETE)
                     .setParameter("id", id)
-                    .setParameter("orderId", orderId)
                     .executeUpdate();
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -65,14 +60,12 @@ public class JpaOrderItemDao implements OrderItemDao {
 
     @Override
     public OrderItem get(int id, int orderId) {
-        OrderItem item = em.find(OrderItem.class, id);
-        return item != null && item.getOrder().getId() == orderId ? item : null;
+        return em.find(OrderItem.class, id);
     }
 
     @Override
     public List<OrderItem> getAll(int orderId) {
         return em.createNamedQuery(OrderItem.ALL, OrderItem.class)
-                .setParameter("orderId", orderId)
                 .getResultList();
     }
 }
