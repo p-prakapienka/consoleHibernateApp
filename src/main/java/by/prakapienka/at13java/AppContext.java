@@ -12,6 +12,8 @@ public class AppContext {
 
     private static OrderItem item;
 
+    private static OrderItem product;
+
     public static User getActiveUser() {
         return activeUser;
     }
@@ -48,6 +50,14 @@ public class AppContext {
 
     public static void setItem(OrderItem item) {
         AppContext.item = item;
+    }
+
+    public static OrderItem getActiveProduct() {
+        return product;
+    }
+
+    public static void setActiveProduct(OrderItem product) {
+        AppContext.product = product;
     }
 
     private AppContext() {}

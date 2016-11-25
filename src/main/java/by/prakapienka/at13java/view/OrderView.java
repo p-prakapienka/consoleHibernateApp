@@ -26,7 +26,7 @@ class OrderView implements View {
 
         ConsoleHelper.writeMessage("Choose operation.");
         ConsoleHelper.writeMessage("1. Show items.");
-        ConsoleHelper.writeMessage("2. Create new item.");
+        ConsoleHelper.writeMessage("2. Add item.");
         ConsoleHelper.writeMessage("3. Edit order name.");
         ConsoleHelper.writeMessage("4. Delete order.");
         ConsoleHelper.writeMessage("5. Previous menu.");
@@ -38,7 +38,7 @@ class OrderView implements View {
                 viewName = showAllOrderItems();
                 break;
             case 2:
-                viewName = createOrderItem();
+                viewName = addOrderItem();
                 break;
             case 3:
                 viewName = updateOrder();
@@ -61,14 +61,22 @@ class OrderView implements View {
     }
 
     private ViewName showAllOrderItems() {
-        List<OrderItem> items = orderItemDao.getAll();
-        ConsoleHelper.writeMessage("\nOrder " + AppContext.getActiveOrder() + ":");
+        Order order = orderDao.getWithItems(
+                AppContext.getActiveOrderId(),
+                AppContext.getActiveUserId());
+        if (order == null) {
+            ConsoleHelper.writeMessage("Failed to load order items.");
+            AppContext.setActiveOrder(null);
+            return ViewName.USER;
+        }
+        AppContext.setActiveOrder(order);
+        ConsoleHelper.writeMessage("\n" + AppContext.getActiveOrder());
 
-        if (items.isEmpty()) {
+        if (order.getOrderItems().isEmpty()) {
             ConsoleHelper.writeMessage("No items found.");
         }
-        for (OrderItem item : items) {
-            ConsoleHelper.writeMessage("Item " + item.getId() + ": " + item.getName());
+        for (OrderItem item : order.getOrderItems()) {
+            ConsoleHelper.writeMessage(item.toString());
         }
         ConsoleHelper.writeMessage("Enter item id or 0 to go back.");
         int result = ConsoleHelper.readNumber();
@@ -78,35 +86,47 @@ class OrderView implements View {
             ConsoleHelper.writeMessage("Unknown command.");
             return ViewName.ORDER;
         } else {
-            OrderItem item = orderItemDao.get(result);
-            if (item != null) {
-                AppContext.setItem(item);
-                return ViewName.ITEM;
-            } else {
-                return ViewName.ORDER;
+            for (OrderItem item : order.getOrderItems()) {
+                if (result == item.getId()) {
+                    AppContext.setItem(item);
+                    return ViewName.ITEM;
+                }
             }
+            ConsoleHelper.writeMessage("Item not found.");
+            return ViewName.ORDER;
         }
     }
 
-    private ViewName createOrderItem() {
-        while (true) {
-            ConsoleHelper.writeMessage("Enter item name.");
-            String itemName = ConsoleHelper.readString();
-            if (itemName.length() > 50) {
-                ConsoleHelper.writeMessage("Name is too long.");
-                continue;
-            }
-            if (itemName.length() == 0) {
-                ConsoleHelper.writeMessage("Name is too short.");
-                continue;
-            }
-            OrderItem item = orderItemDao.save(new OrderItem(itemName));
-            if (item != null) {
-                ConsoleHelper.writeMessage("Item successfully created.");
-            }
-            break;
+    private ViewName addOrderItem() {
+        List<OrderItem> products = orderItemDao.getAll();
+        ConsoleHelper.writeMessage("\nAvailable products:");
+
+        if (products.isEmpty()) {
+            ConsoleHelper.writeMessage("No products found.");
         }
-        return ViewName.ORDER;
+        for (OrderItem product : products) {
+            ConsoleHelper.writeMessage(product.toString());
+        }
+        ConsoleHelper.writeMessage("Enter product id or 0 to go back.");
+        int result = ConsoleHelper.readNumber();
+
+        if (result == 0) {
+            return ViewName.ORDER;
+        } else if (result == -1) {
+            ConsoleHelper.writeMessage("Unknown command.");
+            return ViewName.ORDER;
+        } else {
+            Order order = orderDao.insertItem(
+                    AppContext.getActiveOrderId(), result,
+                    AppContext.getActiveUserId());
+            if (order != null) {
+                AppContext.setActiveOrder(order);
+                return ViewName.ORDER;
+            } else {
+                ConsoleHelper.writeMessage("Failed to add item.");
+                return ViewName.ORDER;
+            }
+        }
     }
 
     private ViewName updateOrder() {

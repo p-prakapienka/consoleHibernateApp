@@ -13,6 +13,7 @@ public class ViewResolver {
         viewMap.put(ViewName.USER, new UserView());
         viewMap.put(ViewName.ORDER, new OrderView());
         viewMap.put(ViewName.ITEM, new ItemView());
+        viewMap.put(ViewName.PRODUCT, new ProductView());
     }
 
     public static void switchView(ViewName viewName) {

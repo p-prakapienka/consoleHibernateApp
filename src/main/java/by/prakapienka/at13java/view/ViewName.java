@@ -2,6 +2,6 @@ package by.prakapienka.at13java.view;
 
 public enum ViewName {
 
-    LOGIN, USER, ORDER, ITEM, EXIT
+    LOGIN, USER, PRODUCT, ORDER, ITEM, EXIT
 
 }

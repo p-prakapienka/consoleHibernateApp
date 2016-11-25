@@ -24,8 +24,8 @@ CREATE TABLE products (
 );
 
 CREATE TABLE orders_products (
-  order_id INT(8) NOT NULL,
-  product_id INT(8) NOT NULL,
+  order_id INT(8),
+  product_id INT(8),
   PRIMARY KEY (order_id, product_id),
   CONSTRAINT fk_order_id FOREIGN KEY (order_id)
   REFERENCES orders (id) ON DELETE CASCADE,
