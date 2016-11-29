@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @NamedQueries({
-        @NamedQuery(name = Order.GET_WITH_ITEMS, query = "SELECT DISTINCT o FROM Order o JOIN FETCH o.orderItems WHERE o.id=:id AND o.user.id=:userId ORDER BY o.name"),
         @NamedQuery(name = Order.ALL, query = "SELECT o FROM Order o WHERE o.user.id=:userId ORDER BY o.name"),
         @NamedQuery(name = Order.DELETE, query = "DELETE FROM Order o WHERE o.id=:id AND o.user.id=:userId"),
 })
@@ -19,7 +18,6 @@ import java.util.Set;
 @Table(name = "orders")
 public class Order extends BaseEntity {
 
-    public static final String GET_WITH_ITEMS = "Order.getWithItems";
     public static final String DELETE = "Order.delete";
     public static final String ALL = "Order.getAll";
 
