@@ -5,6 +5,10 @@ import by.prakapienka.at13java.dao.OrderItemDao;
 import by.prakapienka.at13java.dao.UserDao;
 import by.prakapienka.at13java.model.OrderItem;
 import by.prakapienka.at13java.model.User;
+import by.prakapienka.at13java.service.ProductService;
+import by.prakapienka.at13java.service.ProductServiceImpl;
+import by.prakapienka.at13java.service.UserService;
+import by.prakapienka.at13java.service.UserServiceImpl;
 import by.prakapienka.at13java.util.ConsoleHelper;
 import by.prakapienka.at13java.util.JpaHibernateDaoFactory;
 
@@ -12,8 +16,8 @@ import java.util.List;
 
 class LoginView implements View {
 
-    private UserDao userDao = JpaHibernateDaoFactory.getUserDao();
-    private OrderItemDao orderItemDao = JpaHibernateDaoFactory.getOrderItemDao();
+    private UserService userService = new UserServiceImpl();
+    private ProductService productService = new ProductServiceImpl();
 
     public ViewName show() {
         ConsoleHelper.writeMessage("\nChoose operation.");
@@ -49,14 +53,14 @@ class LoginView implements View {
     }
 
     private ViewName showAllUsers() {
-        List<User> users = userDao.getAll();
+        List<User> users = userService.getAll();
         ConsoleHelper.writeMessage("\nAvailable users:");
 
         if (users.isEmpty()) {
             ConsoleHelper.writeMessage("No users found.");
         }
-        for (User user : users) { //TODO refactor user.toString
-            ConsoleHelper.writeMessage("User " + user.getId() + ": " + user.getName());
+        for (User user : users) {
+            ConsoleHelper.writeMessage(user.toString());
         }
         ConsoleHelper.writeMessage("Enter user id or 0 to go back.");
         int result = ConsoleHelper.readNumber();
@@ -67,7 +71,7 @@ class LoginView implements View {
             ConsoleHelper.writeMessage("Unknown command.");
             return ViewName.LOGIN;
         } else {
-            User user = userDao.get(result);
+            User user = userService.get(result);
             if (user != null) {
                 AppContext.setActiveUser(user);
                 return ViewName.USER;
@@ -90,7 +94,7 @@ class LoginView implements View {
                 ConsoleHelper.writeMessage("Name is too short.");
                 continue;
             }
-            User user = userDao.save(new User(userName));
+            User user = userService.insert(new User(userName));
             if (user != null) {
                 AppContext.setActiveUser(user);
                 ConsoleHelper.writeMessage("User successfully added.");
@@ -101,7 +105,7 @@ class LoginView implements View {
     }
 
     private ViewName showAllProducts() {
-        List<OrderItem> products = orderItemDao.getAll();
+        List<OrderItem> products = productService.getAll();
         ConsoleHelper.writeMessage("\nAvailable products:");
 
         if (products.isEmpty()) {
@@ -119,7 +123,7 @@ class LoginView implements View {
             ConsoleHelper.writeMessage("Unknown command.");
             return ViewName.LOGIN;
         } else {
-            OrderItem product = orderItemDao.get(result);
+            OrderItem product = productService.get(result);
             if (product != null) {
                 AppContext.setActiveProduct(product);
                 return ViewName.PRODUCT;
@@ -142,8 +146,8 @@ class LoginView implements View {
                 ConsoleHelper.writeMessage("Name is too short.");
                 continue;
             }
-            OrderItem item = orderItemDao.save(new OrderItem(itemName));
-            if (item != null) {
+            OrderItem product = productService.insert(new OrderItem(itemName));
+            if (product != null) {
                 ConsoleHelper.writeMessage("Product successfully created.");
             }
             break;

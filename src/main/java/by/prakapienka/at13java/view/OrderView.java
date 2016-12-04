@@ -5,6 +5,10 @@ import by.prakapienka.at13java.dao.OrderDao;
 import by.prakapienka.at13java.dao.OrderItemDao;
 import by.prakapienka.at13java.model.Order;
 import by.prakapienka.at13java.model.OrderItem;
+import by.prakapienka.at13java.service.OrderService;
+import by.prakapienka.at13java.service.OrderServiceImpl;
+import by.prakapienka.at13java.service.ProductService;
+import by.prakapienka.at13java.service.ProductServiceImpl;
 import by.prakapienka.at13java.util.ConsoleHelper;
 import by.prakapienka.at13java.util.JpaHibernateDaoFactory;
 
@@ -12,8 +16,8 @@ import java.util.List;
 
 class OrderView implements View {
 
-    private OrderDao orderDao = JpaHibernateDaoFactory.getOrderDao();
-    private OrderItemDao orderItemDao = JpaHibernateDaoFactory.getOrderItemDao();
+    private OrderService orderService = new OrderServiceImpl();
+    private ProductService productService = new ProductServiceImpl();
 
     @Override
     public ViewName show() {
@@ -61,7 +65,7 @@ class OrderView implements View {
     }
 
     private ViewName showAllOrderItems() {
-        Order order = orderDao.getWithItems(
+        Order order = orderService.getWithItems(
                 AppContext.getActiveOrderId(),
                 AppContext.getActiveUserId());
         if (order == null) {
@@ -98,7 +102,7 @@ class OrderView implements View {
     }
 
     private ViewName addOrderItem() {
-        List<OrderItem> products = orderItemDao.getAll();
+        List<OrderItem> products = productService.getAll();
         ConsoleHelper.writeMessage("\nAvailable products:");
 
         if (products.isEmpty()) {
@@ -116,8 +120,8 @@ class OrderView implements View {
             ConsoleHelper.writeMessage("Unknown command.");
             return ViewName.ORDER;
         } else {
-            Order order = orderDao.insertItem(
-                    AppContext.getActiveOrderId(), result,
+            Order order = orderService.insertItem(
+                    AppContext.getActiveOrder(), result,
                     AppContext.getActiveUserId());
             if (order != null) {
                 AppContext.setActiveOrder(order);
@@ -142,7 +146,7 @@ class OrderView implements View {
                 continue;
             }
             AppContext.getActiveOrder().setName(newName);
-            Order updated = orderDao.save(
+            Order updated = orderService.update(
                     AppContext.getActiveOrder(),
                     AppContext.getActiveUserId());
             if (updated != null) {
@@ -154,7 +158,7 @@ class OrderView implements View {
     }
 
     private ViewName deleteOrder() {
-        orderDao.delete(AppContext.getActiveOrderId(), AppContext.getActiveUserId());
+        orderService.delete(AppContext.getActiveOrderId(), AppContext.getActiveUserId());
         AppContext.setActiveOrder(null);
         return ViewName.USER;
     }

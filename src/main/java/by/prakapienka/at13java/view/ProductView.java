@@ -3,12 +3,14 @@ package by.prakapienka.at13java.view;
 import by.prakapienka.at13java.AppContext;
 import by.prakapienka.at13java.dao.OrderItemDao;
 import by.prakapienka.at13java.model.OrderItem;
+import by.prakapienka.at13java.service.ProductService;
+import by.prakapienka.at13java.service.ProductServiceImpl;
 import by.prakapienka.at13java.util.ConsoleHelper;
 import by.prakapienka.at13java.util.JpaHibernateDaoFactory;
 
 public class ProductView implements View {
 
-    private OrderItemDao itemDao = JpaHibernateDaoFactory.getOrderItemDao();
+    private ProductService productService = new ProductServiceImpl();
 
     @Override
     public ViewName show() {
@@ -56,7 +58,7 @@ public class ProductView implements View {
                 continue;
             }
             AppContext.getActiveProduct().setName(newName);
-            OrderItem updated = itemDao.save(AppContext.getActiveProduct());
+            OrderItem updated = productService.update(AppContext.getActiveProduct());
             if (updated != null) {
                 ConsoleHelper.writeMessage("Product successfully updated.");
             }
@@ -66,7 +68,7 @@ public class ProductView implements View {
     }
 
     private ViewName deleteOrderItem() {
-        itemDao.delete(AppContext.getActiveProduct().getId());
+        productService.delete(AppContext.getActiveProduct().getId());
         AppContext.setActiveProduct(null);
         return ViewName.LOGIN;
     }

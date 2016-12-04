@@ -5,6 +5,10 @@ import by.prakapienka.at13java.dao.OrderDao;
 import by.prakapienka.at13java.dao.UserDao;
 import by.prakapienka.at13java.model.Order;
 import by.prakapienka.at13java.model.User;
+import by.prakapienka.at13java.service.OrderService;
+import by.prakapienka.at13java.service.OrderServiceImpl;
+import by.prakapienka.at13java.service.UserService;
+import by.prakapienka.at13java.service.UserServiceImpl;
 import by.prakapienka.at13java.util.ConsoleHelper;
 import by.prakapienka.at13java.util.JpaHibernateDaoFactory;
 
@@ -12,8 +16,8 @@ import java.util.List;
 
 class UserView implements View {
 
-    private UserDao userDao = JpaHibernateDaoFactory.getUserDao();
-    private OrderDao orderDao = JpaHibernateDaoFactory.getOrderDao();
+    private UserService userService = new UserServiceImpl();
+    private OrderService orderService = new OrderServiceImpl();
 
     @Override
     public ViewName show() {
@@ -59,7 +63,7 @@ class UserView implements View {
     }
 
     private ViewName showAllOrders() {
-        List<Order> orders = orderDao.getAll(AppContext.getActiveUserId());
+        List<Order> orders = orderService.getAll(AppContext.getActiveUserId());
         ConsoleHelper.writeMessage("\nUser orders:");
 
         if (orders.isEmpty()) {
@@ -76,7 +80,7 @@ class UserView implements View {
             ConsoleHelper.writeMessage("Unknown command.");
             return ViewName.USER;
         } else {
-            Order order = orderDao.get(result, AppContext.getActiveUserId());
+            Order order = orderService.get(result, AppContext.getActiveUserId());
             if (order != null) {
                 AppContext.setActiveOrder(order);
                 return ViewName.ORDER;
@@ -98,7 +102,7 @@ class UserView implements View {
                 ConsoleHelper.writeMessage("Name is too short.");
                 continue;
             }
-            Order order = orderDao.save(
+            Order order = orderService.insert(
                     new Order(orderName),
                     AppContext.getActiveUserId());
             if (order != null) {
@@ -123,7 +127,7 @@ class UserView implements View {
                 continue;
             }
             AppContext.getActiveUser().setName(newName);
-            User updated = userDao.save(AppContext.getActiveUser());
+            User updated = userService.update(AppContext.getActiveUser());
             if (updated != null) {
                 ConsoleHelper.writeMessage("User successfully updated.");
             }
@@ -133,7 +137,7 @@ class UserView implements View {
     }
 
     private ViewName deleteUser() {
-        userDao.delete(AppContext.getActiveUserId());
+        userService.delete(AppContext.getActiveUserId());
         AppContext.setActiveUser(null);
         return ViewName.LOGIN;
     }
