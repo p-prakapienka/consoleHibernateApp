@@ -1,23 +1,19 @@
 package by.prakapienka.at13java.view;
 
 import by.prakapienka.at13java.AppContext;
-import by.prakapienka.at13java.dao.OrderDao;
-import by.prakapienka.at13java.dao.UserDao;
 import by.prakapienka.at13java.model.Order;
 import by.prakapienka.at13java.model.User;
 import by.prakapienka.at13java.service.OrderService;
-import by.prakapienka.at13java.service.OrderServiceImpl;
 import by.prakapienka.at13java.service.UserService;
-import by.prakapienka.at13java.service.UserServiceImpl;
 import by.prakapienka.at13java.util.ConsoleHelper;
-import by.prakapienka.at13java.util.JpaHibernateDaoFactory;
+import by.prakapienka.at13java.util.SpringServiceFactory;
 
 import java.util.List;
 
 class UserView implements View {
 
-    private UserService userService = new UserServiceImpl();
-    private OrderService orderService = new OrderServiceImpl();
+    private UserService userService = SpringServiceFactory.getUserService();
+    private OrderService orderService = SpringServiceFactory.getOrderService();
 
     @Override
     public ViewName show() {

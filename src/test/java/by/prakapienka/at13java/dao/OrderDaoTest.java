@@ -18,8 +18,8 @@ public class OrderDaoTest extends AbstractDaoTest {
     @Before
     public void setUp() {
         super.setUp();
-        orderDao = new JpaOrderDao(em);
-        orderItemDao = new JpaOrderItemDao(em);
+        orderDao = new JpaOrderDao();
+        orderItemDao = new JpaOrderItemDao();
     }
 
     @Test

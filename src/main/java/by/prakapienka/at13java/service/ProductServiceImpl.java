@@ -2,13 +2,16 @@ package by.prakapienka.at13java.service;
 
 import by.prakapienka.at13java.dao.OrderItemDao;
 import by.prakapienka.at13java.model.OrderItem;
-import by.prakapienka.at13java.util.JpaHibernateDaoFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ProductServiceImpl implements ProductService {
 
-    private OrderItemDao productDao = JpaHibernateDaoFactory.getOrderItemDao();
+    @Autowired
+    private OrderItemDao productDao;
 
     @Override
     public List<OrderItem> getAll() {

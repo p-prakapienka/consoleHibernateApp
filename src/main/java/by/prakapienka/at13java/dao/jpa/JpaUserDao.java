@@ -2,59 +2,37 @@ package by.prakapienka.at13java.dao.jpa;
 
 import by.prakapienka.at13java.dao.UserDao;
 import by.prakapienka.at13java.model.User;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Repository
+@Transactional(readOnly = true)
 public class JpaUserDao implements UserDao {
 
+    @PersistenceContext
     private EntityManager em;
 
-    public JpaUserDao(EntityManager em) {
-        this.em = em;
-    }
-
     @Override
+    @Transactional
     public User save(User user) {
-        em.getTransaction().begin();
         if (user.isNew()) {
-            try {
-                em.persist(user);
-                em.getTransaction().commit();
-            } catch (Exception e) {
-                em.getTransaction().rollback();
-                //TODO log exception
-                return null;
-            }
+            em.persist(user);
             return user;
         } else {
-            User updated = null;
-            try {
-                updated = em.merge(user);
-                em.getTransaction().commit();
-            } catch (Exception e) {
-                em.getTransaction().rollback();
-                //TODO log exception
-            }
-            return updated;
+            return em.merge(user);
         }
     }
 
     @Override
+    @Transactional
     public boolean delete(int id) {
-        em.getTransaction().begin();
-        int result = 0;
-
-        try {
-            result = em.createNamedQuery(User.DELETE)
-                    .setParameter("id", id)
-                    .executeUpdate();
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            //TODO log exception
-        }
-        return result != 0;
+        return em.createNamedQuery(User.DELETE)
+                .setParameter("id", id)
+                .executeUpdate() != 0;
     }
 
     @Override
@@ -69,9 +47,8 @@ public class JpaUserDao implements UserDao {
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
-        em.getTransaction().begin();
         em.createNamedQuery(User.DELETE_ALL).executeUpdate();
-        em.getTransaction().commit();
     }
 }

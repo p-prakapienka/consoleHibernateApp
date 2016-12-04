@@ -1,17 +1,14 @@
 package by.prakapienka.at13java.view;
 
 import by.prakapienka.at13java.AppContext;
-import by.prakapienka.at13java.dao.OrderDao;
-import by.prakapienka.at13java.dao.OrderItemDao;
-import by.prakapienka.at13java.model.OrderItem;
 import by.prakapienka.at13java.service.OrderService;
 import by.prakapienka.at13java.service.OrderServiceImpl;
 import by.prakapienka.at13java.util.ConsoleHelper;
-import by.prakapienka.at13java.util.JpaHibernateDaoFactory;
+import by.prakapienka.at13java.util.SpringServiceFactory;
 
 class ItemView implements View {
 
-    private OrderService orderService = new OrderServiceImpl();
+    private OrderService orderService = SpringServiceFactory.getOrderService();
 
     @Override
     public ViewName show() {

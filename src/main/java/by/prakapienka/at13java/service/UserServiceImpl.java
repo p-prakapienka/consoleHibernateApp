@@ -4,14 +4,19 @@ import by.prakapienka.at13java.dao.OrderDao;
 import by.prakapienka.at13java.dao.UserDao;
 import by.prakapienka.at13java.model.Order;
 import by.prakapienka.at13java.model.User;
-import by.prakapienka.at13java.util.JpaHibernateDaoFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
-    private UserDao userDao = JpaHibernateDaoFactory.getUserDao();
-    private OrderDao orderDao = JpaHibernateDaoFactory.getOrderDao();
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private OrderDao orderDao;
 
     @Override
     public List<User> getAll() {

@@ -1,23 +1,19 @@
 package by.prakapienka.at13java.view;
 
 import by.prakapienka.at13java.AppContext;
-import by.prakapienka.at13java.dao.OrderItemDao;
-import by.prakapienka.at13java.dao.UserDao;
 import by.prakapienka.at13java.model.OrderItem;
 import by.prakapienka.at13java.model.User;
 import by.prakapienka.at13java.service.ProductService;
-import by.prakapienka.at13java.service.ProductServiceImpl;
 import by.prakapienka.at13java.service.UserService;
-import by.prakapienka.at13java.service.UserServiceImpl;
 import by.prakapienka.at13java.util.ConsoleHelper;
-import by.prakapienka.at13java.util.JpaHibernateDaoFactory;
+import by.prakapienka.at13java.util.SpringServiceFactory;
 
 import java.util.List;
 
 class LoginView implements View {
 
-    private UserService userService = new UserServiceImpl();
-    private ProductService productService = new ProductServiceImpl();
+    private UserService userService = SpringServiceFactory.getUserService();
+    private ProductService productService = SpringServiceFactory.getProductService();
 
     public ViewName show() {
         ConsoleHelper.writeMessage("\nChoose operation.");
@@ -148,6 +144,7 @@ class LoginView implements View {
             }
             OrderItem product = productService.insert(new OrderItem(itemName));
             if (product != null) {
+                AppContext.setActiveProduct(product);
                 ConsoleHelper.writeMessage("Product successfully created.");
             }
             break;

@@ -2,59 +2,37 @@ package by.prakapienka.at13java.dao.jpa;
 
 import by.prakapienka.at13java.dao.OrderItemDao;
 import by.prakapienka.at13java.model.OrderItem;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Repository
+@Transactional(readOnly = true)
 public class JpaOrderItemDao implements OrderItemDao {
 
+    @PersistenceContext
     private EntityManager em;
 
-    public JpaOrderItemDao(EntityManager em) {
-        this.em = em;
-    }
-
     @Override
+    @Transactional
     public OrderItem save(OrderItem item) {
-        em.getTransaction().begin();
         if (item.isNew()) {
-            try {
-                em.persist(item);
-                em.getTransaction().commit();
-            } catch (Exception e) {
-                em.getTransaction().rollback();
-                //TODO log exception
-                return null;
-            }
+            em.persist(item);
             return item;
         } else {
-            OrderItem updated = null;
-            try {
-                updated = em.merge(item);
-                em.getTransaction().commit();
-            } catch (Exception e) {
-                em.getTransaction().rollback();
-                //TODO log exception
-            }
-            return updated;
+            return em.merge(item);
         }
     }
 
     @Override
+    @Transactional
     public boolean delete(int id) {
-        em.getTransaction().begin();
-        int result = 0;
-
-        try {
-            result = em.createNamedQuery(OrderItem.DELETE)
-                    .setParameter("id", id)
-                    .executeUpdate();
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            //TODO log exception
-        }
-        return result != 0;
+        return em.createNamedQuery(OrderItem.DELETE)
+                .setParameter("id", id)
+                .executeUpdate() != 0;
     }
 
     @Override

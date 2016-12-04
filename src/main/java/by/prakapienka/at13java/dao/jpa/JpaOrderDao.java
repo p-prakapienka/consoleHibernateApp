@@ -5,64 +5,42 @@ import by.prakapienka.at13java.model.Order;
 import by.prakapienka.at13java.model.OrderItem;
 import by.prakapienka.at13java.model.User;
 import org.hibernate.Hibernate;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Repository
+@Transactional(readOnly = true)
 public class JpaOrderDao implements OrderDao {
 
+    @PersistenceContext
     private EntityManager em;
 
-    public JpaOrderDao(EntityManager em) {
-        this.em = em;
-    }
-
     @Override
+    @Transactional
     public Order save(Order order, int userId) {
         if (!order.isNew() && get(order.getId(), userId) == null) {
             return null;
         }
-        em.getTransaction().begin();
         order.setUser(em.getReference(User.class, userId));
         if (order.isNew()) {
-            try {
-                em.persist(order);
-                em.getTransaction().commit();
-            } catch (Exception e) {
-                em.getTransaction().rollback();
-                //TODO log exception
-                return null;
-            }
+            em.persist(order);
             return order;
         } else {
-            Order updated = null;
-            try {
-                updated = em.merge(order);
-                em.getTransaction().commit();
-            } catch (Exception e) {
-                em.getTransaction().rollback();
-                //TODO log exception
-            }
-            return updated;
+            return em.merge(order);
         }
     }
 
     @Override
+    @Transactional
     public boolean delete(int id, int userId) {
-        em.getTransaction().begin();
-        int result = 0;
-
-        try {
-            result = em.createNamedQuery(Order.DELETE)
-                    .setParameter("id", id)
-                    .setParameter("userId", userId)
-                    .executeUpdate();
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            //TODO log exception
-        }
-        return result != 0;
+        return em.createNamedQuery(Order.DELETE)
+                .setParameter("id", id)
+                .setParameter("userId", userId)
+                .executeUpdate() != 0;
     }
 
     @Override
@@ -86,36 +64,20 @@ public class JpaOrderDao implements OrderDao {
     }
 
     @Override
+    @Transactional
     public Order insertItem(int id, int itemId, int userId) {
-        Order updated = null;
-        try {
-            em.getTransaction().begin();
-            Order order = get(id, userId);
-            OrderItem item = em.getReference(OrderItem.class, itemId);
-            order.getOrderItems().add(item);
-            updated = em.merge(order);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            //TODO log exception
-        }
-        return updated;
+        Order order = get(id, userId);
+        OrderItem item = em.getReference(OrderItem.class, itemId);
+        order.getOrderItems().add(item);
+        return em.merge(order);
     }
 
     @Override
+    @Transactional
     public Order deleteItem(int id, int itemId, int userId) {
-        Order updated = null;
-        try {
-            em.getTransaction().begin();
             Order order = getWithItems(id, userId);
             OrderItem item = em.getReference(OrderItem.class, itemId);
             order.getOrderItems().remove(item);
-            updated = em.merge(order);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            //TODO log exception
-        }
-        return updated;
+            return em.merge(order);
     }
 }

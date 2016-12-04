@@ -18,7 +18,7 @@ public class UserDaoTest extends AbstractDaoTest {
     @Before
     public void setUp() {
         super.setUp();
-        userDao = new JpaUserDao(em);
+        userDao = new JpaUserDao();
     }
 
     @Test
