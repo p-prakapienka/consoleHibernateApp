@@ -1,10 +1,9 @@
 package by.prakapienka.at13java.dao;
 
-import by.prakapienka.at13java.dao.jpa.JpaUserDao;
 import by.prakapienka.at13java.model.User;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -13,13 +12,8 @@ import static by.prakapienka.at13java.TestData.USER1_ID;
 
 public class UserDaoTest extends AbstractDaoTest {
 
+    @Autowired
     private UserDao userDao;
-
-    @Before
-    public void setUp() {
-        super.setUp();
-        userDao = new JpaUserDao();
-    }
 
     @Test
     public void testInsertAndDelete() {
@@ -27,8 +21,12 @@ public class UserDaoTest extends AbstractDaoTest {
         User persisted = userDao.get(user.getId());
         Assert.assertEquals(user, persisted);
         Assert.assertTrue(userDao.getAll().size() == 3);
-        userDao.delete(user.getId());
-        Assert.assertTrue(userDao.getAll().size() == 2);
+    }
+
+    @Test
+    public void testDelete() {
+        userDao.delete(USER1_ID);
+        Assert.assertTrue(userDao.getAll().size() == 1);
     }
 
     @Test
@@ -36,9 +34,6 @@ public class UserDaoTest extends AbstractDaoTest {
         User user = new User(USER1_ID, "New name");
         User updated = userDao.save(user);
         Assert.assertEquals(updated, user);
-        user.setName(USER1.getName());
-        user = userDao.save(user);
-        Assert.assertEquals(USER1, user);
     }
 
     @Test

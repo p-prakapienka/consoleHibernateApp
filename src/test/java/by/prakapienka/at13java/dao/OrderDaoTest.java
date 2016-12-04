@@ -1,35 +1,33 @@
 package by.prakapienka.at13java.dao;
 
-import by.prakapienka.at13java.dao.jpa.JpaOrderDao;
-import by.prakapienka.at13java.dao.jpa.JpaOrderItemDao;
 import by.prakapienka.at13java.model.Order;
 import by.prakapienka.at13java.model.OrderItem;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static by.prakapienka.at13java.TestData.*;
 
 public class OrderDaoTest extends AbstractDaoTest {
 
+    @Autowired
     private OrderDao orderDao;
+
+    @Autowired
     private OrderItemDao orderItemDao;
 
-    @Before
-    public void setUp() {
-        super.setUp();
-        orderDao = new JpaOrderDao();
-        orderItemDao = new JpaOrderItemDao();
-    }
-
     @Test
-    public void testInsertAndDelete() {
+    public void testInsert() {
         Order order = new Order("New order", USER2);
         Order persisted = orderDao.save(order, USER2_ID);
         Assert.assertEquals(order, persisted);
         Assert.assertTrue(orderDao.getAll(USER2_ID).size() == 3);
-        orderDao.delete(persisted.getId(), USER2_ID);
-        Assert.assertTrue(orderDao.getAll(USER2_ID).size() == 2);
+    }
+
+    @Test
+    public void testDelete() {
+        orderDao.delete(ORDER3_ID, USER2_ID);
+        Assert.assertTrue(orderDao.getAll(USER2_ID).size() == 1);
     }
 
     @Test
@@ -37,9 +35,6 @@ public class OrderDaoTest extends AbstractDaoTest {
         Order order = new Order(ORDER3_ID, "New name", USER2);
         Order updated = orderDao.save(order, USER2_ID);
         Assert.assertEquals(updated, order);
-        order.setName(ORDER3.getName());
-        order = orderDao.save(order, USER2_ID);
-        Assert.assertEquals(ORDER3, order);
     }
 
     @Test
@@ -61,13 +56,16 @@ public class OrderDaoTest extends AbstractDaoTest {
     }
 
     @Test
-    public void testInsertAndDeleteItem() {
+    public void testInsertItem() {
         OrderItem item = orderItemDao.save(new OrderItem("New Item"));
         Order order = orderDao.insertItem(ORDER4_ID, item.getId(), USER2_ID);
         Assert.assertTrue(order.getOrderItems().size() == 3);
-        order = orderDao.deleteItem(ORDER4_ID, item.getId(), USER2_ID);
-        Assert.assertTrue(order.getOrderItems().size() == 2);
-        orderItemDao.delete(item.getId());
+    }
+
+    @Test
+    public void testDeleteItem() {
+        Order order = orderDao.deleteItem(ORDER4_ID, ORDER_ITEM_7_ID, USER2_ID);
+        Assert.assertTrue(order.getOrderItems().size() == 1);
     }
 
     @Test
@@ -76,9 +74,6 @@ public class OrderDaoTest extends AbstractDaoTest {
         order = orderDao.save(order, USER1_ID);
         order = orderDao.insertItem(order.getId(), ORDER_ITEM_3_ID, USER1_ID);
         Assert.assertNotNull(order);
-        order = orderDao.deleteItem(order.getId(), ORDER_ITEM_3_ID, USER1_ID);
-        Assert.assertTrue(order.getOrderItems().size() == 0);
-        Assert.assertTrue(orderDao.delete(order.getId(), USER1_ID));
     }
 
     @Test
@@ -87,7 +82,5 @@ public class OrderDaoTest extends AbstractDaoTest {
         order = orderDao.save(order, USER1_ID);
         order = orderDao.getWithItems(order.getId(), USER1_ID);
         Assert.assertTrue(order.getOrderItems().isEmpty());
-        orderDao.delete(order.getId(), USER1_ID);
-        Assert.assertTrue(orderDao.getAll(USER1_ID).size() == 2);
     }
 }
