@@ -45,12 +45,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order insertItem(Order order, int itemId, int userId) {
-        return orderDao.insertItem(order.getId(), itemId, userId);
+    public Order insertItem(int orderId, int itemId, int userId) {
+        return orderDao.insertItem(orderId, itemId, userId);
     }
 
     @Override
-    public Order deleteItem(Order order, int itemId, int userId) {
-        return orderDao.deleteItem(order.getId(), itemId, userId);
+    public Order deleteItem(int orderId, int itemId, int userId) {
+        return orderDao.deleteItem(orderId, itemId, userId);
     }
 }

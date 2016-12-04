@@ -18,7 +18,7 @@ public interface OrderService {
 
     Order update(Order order, int userId);
 
-    Order insertItem(Order order, int itemId, int userId);
+    Order insertItem(int orderId, int itemId, int userId);
 
-    Order deleteItem(Order order, int itemId, int userId);
+    Order deleteItem(int orderId, int itemId, int userId);
 }

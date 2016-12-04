@@ -39,6 +39,11 @@ public class Order extends BaseEntity {
 
     public Order() {}
 
+    public Order(Integer id, String name) {
+        super(id);
+        this.name = name;
+    }
+
     public Order(String name) {
         this.name = name;
     }
