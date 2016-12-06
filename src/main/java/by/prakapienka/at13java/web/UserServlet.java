@@ -34,6 +34,8 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
 
+        if (true) {}
+
         try (PrintWriter out = resp.getWriter()) {
             out.println("<!DOCTYPE html><html><head><title>Users</title></head><body>");
             out.println("<h1><a href=\"" + req.getContextPath() + "\">Main</a></h1>");
@@ -74,6 +76,8 @@ public class UserServlet extends HttpServlet {
                 out.println("\"/><label>Name:<input name=\"name\" value=\"");
                 out.println(user.getName());
                 out.println("\"/></label><input type=\"submit\" value=\"Ok\"/>");
+                out.print("<p><a href=\"" + req.getContextPath());
+                out.print("/users\">Back</a></p>");
             }
             out.println("</body></html>");
         }

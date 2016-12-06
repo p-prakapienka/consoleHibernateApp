@@ -74,6 +74,8 @@ public class ItemServlet extends HttpServlet {
                 } else {
                     out.println("<p>No items found</p>");
                 }
+                out.print("<p><a href=\"" + req.getContextPath());
+                out.print("/orders?id=" + id + "\">Back</a></p>");
             } else if ("delete".equals(action)) {
                 orderService.deleteItem(
                         Integer.valueOf(req.getParameter("order")),
@@ -98,6 +100,9 @@ public class ItemServlet extends HttpServlet {
                 } else {
                     out.println("<p>No products found</p>");
                 }
+                out.print("<p><a href=\"" + req.getContextPath());
+                out.print("/items?id=" + id + "&order=" + orderId);
+                out.println("\">Back</a></p>");
             } else if ("doAdd".equals(action)) {
                 orderService.insertItem(
                         Integer.valueOf(orderId),

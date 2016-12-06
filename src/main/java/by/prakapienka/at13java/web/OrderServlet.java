@@ -67,6 +67,7 @@ public class OrderServlet extends HttpServlet {
                 } else {
                     out.println("<p>No orders found</p>");
                 }
+                out.print("<p><a href=\"" + req.getContextPath() + "/users\">Back</a></p>");
             } else if ("delete".equals(action)) {
                 orderService.delete(
                         Integer.valueOf(req.getParameter("order")),
@@ -86,6 +87,8 @@ public class OrderServlet extends HttpServlet {
                 out.print("\"/><label>Name:<input name=\"name\" value=\"");
                 out.print(order.getName());
                 out.println("\"/></label><input type=\"submit\" value=\"Ok\"/>");
+                out.print("<p><a href=\"" + req.getContextPath());
+                out.print("/orders?id=" + id + "\">Back</a></p>");
             }
             out.println("</body></html>");
         }

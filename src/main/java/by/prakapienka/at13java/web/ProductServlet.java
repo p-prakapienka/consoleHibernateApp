@@ -72,6 +72,8 @@ public class ProductServlet extends HttpServlet {
                 out.println("\"/><label>Name:<input name=\"name\" value=\"");
                 out.println(product.getName());
                 out.println("\"/></label><input type=\"submit\" value=\"Ok\"/>");
+                out.print("<p><a href=\"" + req.getContextPath());
+                out.print("/products\">Back</a></p>");
             }
             out.println("</body></html>");
         }
