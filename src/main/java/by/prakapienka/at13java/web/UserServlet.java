@@ -35,7 +35,6 @@ public class UserServlet extends HttpServlet {
         String action = req.getParameter("action");
         if (true) {}
         if (true) {}
-        if (true) {}
 
         try (PrintWriter out = resp.getWriter()) {
             out.println("<!DOCTYPE html><html><head><title>Users</title></head><body>");
